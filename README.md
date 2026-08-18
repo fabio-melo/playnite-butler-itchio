@@ -143,7 +143,7 @@ Playnite's built-in add-on browser once submitted to the
 
 ## License
 
-[MIT](LICENSE) © 2026 Fabio Melo.
+[MIT](LICENSE)
 
 butler and itch.io are trademarks of their respective owners. This is an
 unofficial, community-maintained extension and is not affiliated with itch.io.
