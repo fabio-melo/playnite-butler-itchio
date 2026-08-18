@@ -35,6 +35,15 @@ channel).
 
 ## Building
 
+### Prerequisites
+
+- Windows with the **.NET SDK** (any recent version — it targets `net462`,
+  whose reference assemblies ship with the SDK / Visual Studio Build Tools).
+- **Playnite** installed (only needed to package a `.pext`, and to obtain the
+  DLL below).
+
+### 1. Supply the UDM assembly
+
 This repository does **not** redistribute third-party assemblies. Before
 building you must supply `UnifiedDownloadManagerApi.dll`:
 
@@ -43,15 +52,33 @@ building you must supply `UnifiedDownloadManagerApi.dll`:
    `%APPDATA%\Playnite\Extensions\<UDM-extension-id>\`.
 3. Copy `UnifiedDownloadManagerApi.dll` from there into `lib/` in this repo.
 
-Then build:
+### 2. Compile
 
 ```bash
 dotnet build -c Release
 ```
 
-`PlayniteSDK` and `Newtonsoft.Json` are restored from NuGet automatically.
+The output lands in `bin/Release/net462/`. `PlayniteSDK` and `Newtonsoft.Json`
+are restored from NuGet automatically.
+
+### 3. Package a `.pext` (optional)
+
+A `.pext` is the installable package. Use Playnite's own **Toolbox** to build
+it — it validates the manifest and names the file
+`<AddonId>_<version>.pext`:
+
+```pwsh
+# Toolbox.exe lives in your Playnite install folder
+& "$env:LOCALAPPDATA\Playnite\Toolbox.exe" pack "bin\Release\net462" "dist"
+```
+
+This writes `dist\Butler_Itchio_0_1_0.pext`. CI does exactly this on every push
+(see [Continuous integration](#continuous-integration)), so packaging by hand is
+only needed for local testing.
 
 ## Installing (from source)
+
+Either double-click the `.pext` (Playnite installs it), or, for a dev loop:
 
 1. Build in Release.
 2. Copy the contents of `bin/Release/net462/` into a new folder under
@@ -61,9 +88,10 @@ dotnet build -c Release
 ## Continuous integration
 
 [`.github/workflows/build-pext.yml`](.github/workflows/build-pext.yml) builds the
-extension and packages a `.pext` on every push to `main`, on pull requests, and on
-demand (`workflow_dispatch`). The packaged `.pext` is uploaded as a build artifact;
-pushing a `v*` tag also attaches it to a GitHub Release.
+extension and packages a `.pext` with Playnite's Toolbox on every push to `main`,
+on pull requests, and on demand (`workflow_dispatch`). The packaged `.pext` is
+uploaded as a build artifact; pushing a `v*` tag also attaches it to a GitHub
+Release.
 
 Because the repo does not redistribute `UnifiedDownloadManagerApi.dll`, CI reads it
 from a repository secret:
@@ -78,7 +106,19 @@ from a repository secret:
 Without the secret (e.g. on forks) the build step is skipped with a notice rather
 than failing.
 
-To cut a release: `git tag v0.1.0 && git push origin v0.1.0`.
+### Releasing
+
+1. Bump `Version` in [`extension.yaml`](extension.yaml).
+2. Add a matching entry to [`installer.yaml`](installer.yaml) — the manifest the
+   Playnite add-on database reads. Its `PackageUrl` must point at the release
+   asset, e.g.
+   `.../releases/download/v<version>/Butler_Itchio_<version-with-underscores>.pext`.
+3. Tag and push: `git tag v0.1.0 && git push origin v0.1.0`. CI builds the
+   `.pext` and attaches it to the release automatically.
+
+`installer.yaml` (`AddonId: Butler_Itchio`) is what lists this extension in
+Playnite's built-in add-on browser once submitted to the
+[Playnite add-on database](https://github.com/JosefNemec/PlayniteAddonDatabase).
 
 ## Project layout
 
@@ -90,6 +130,7 @@ To cut a release: `git tag v0.1.0 && git push origin v0.1.0`.
 | `Udm/` | Unified Download Manager integration |
 | `Views/` | WPF settings + install UI |
 | `extension.yaml` | Playnite extension manifest |
+| `installer.yaml` | add-on database manifest (versions + download URLs) |
 
 ## License
 

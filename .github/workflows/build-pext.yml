@@ -48,33 +48,42 @@ jobs:
         if: steps.udm.outputs.available == 'true'
         run: dotnet build -c Release --nologo
 
-      - name: Read extension version
-        if: steps.udm.outputs.available == 'true'
-        id: meta
-        shell: pwsh
-        run: |
-          $line = Select-String -Path extension.yaml -Pattern '^Version:\s*(.+)$'
-          $version = $line.Matches[0].Groups[1].Value.Trim()
-          Write-Host "Extension version: $version"
-          "version=$version" >> $env:GITHUB_OUTPUT
-
-      # A .pext is a zip of the extension's build output (manifest + assemblies +
-      # resources) with a .pext extension. Playnite installs it by unzipping.
-      - name: Package .pext
+      # Pack with Playnite's official Toolbox rather than a hand-rolled zip: it
+      # validates the manifest and names the .pext as <AddonId>_<version>.pext, the
+      # exact form the add-on database and installer.yaml expect. Toolbox ships inside
+      # the Playnite portable build, so fetch the latest release and run it from there.
+      - name: Package .pext (Playnite Toolbox)
         if: steps.udm.outputs.available == 'true'
         id: pack
         shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           $out = "bin/Release/net462"
           if (-not (Test-Path "$out/extension.yaml")) {
             throw "extension.yaml missing from build output ($out)."
           }
+
+          $headers = @{ 'User-Agent' = 'ci'; 'Authorization' = "Bearer $env:GH_TOKEN" }
+          $rel = Invoke-RestMethod 'https://api.github.com/repos/JosefNemec/Playnite/releases/latest' -Headers $headers
+          $asset = $rel.assets | Where-Object { $_.name -match '^Playnite.*\.zip$' } | Select-Object -First 1
+          if (-not $asset) { throw "Could not find a Playnite portable .zip in the latest release." }
+          Write-Host "Playnite portable: $($asset.name)"
+
+          Invoke-WebRequest $asset.browser_download_url -OutFile playnite.zip -Headers @{ 'User-Agent' = 'ci' }
+          Expand-Archive playnite.zip -DestinationPath playnite -Force
+          $toolbox = Get-ChildItem -Recurse playnite -Filter Toolbox.exe | Select-Object -First 1
+          if (-not $toolbox) { throw "Toolbox.exe not found in the Playnite portable build." }
+
           New-Item -ItemType Directory -Force -Path dist | Out-Null
-          $name = "ItchioDownloader_$('${{ steps.meta.outputs.version }}').pext"
-          Compress-Archive -Path "$out/*" -DestinationPath "dist/$name" -Force
-          Write-Host "Packed dist/$name"
-          "file=dist/$name" >> $env:GITHUB_OUTPUT
-          "name=$name" >> $env:GITHUB_OUTPUT
+          & $toolbox.FullName pack $out (Resolve-Path dist).Path
+          if ($LASTEXITCODE -ne 0) { throw "Toolbox pack failed with exit code $LASTEXITCODE." }
+
+          $pext = Get-ChildItem dist -Filter *.pext | Select-Object -First 1
+          if (-not $pext) { throw "Toolbox produced no .pext." }
+          Write-Host "Packed $($pext.Name)"
+          "file=dist/$($pext.Name)" >> $env:GITHUB_OUTPUT
+          "name=$($pext.Name)" >> $env:GITHUB_OUTPUT
 
       - name: Upload artifact
         if: steps.udm.outputs.available == 'true'
