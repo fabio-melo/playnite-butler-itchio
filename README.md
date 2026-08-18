@@ -58,6 +58,28 @@ dotnet build -c Release
    `%APPDATA%\Playnite\Extensions\`.
 3. Restart Playnite and sign in to itch.io from the extension settings.
 
+## Continuous integration
+
+[`.github/workflows/build-pext.yml`](.github/workflows/build-pext.yml) builds the
+extension and packages a `.pext` on every push to `main`, on pull requests, and on
+demand (`workflow_dispatch`). The packaged `.pext` is uploaded as a build artifact;
+pushing a `v*` tag also attaches it to a GitHub Release.
+
+Because the repo does not redistribute `UnifiedDownloadManagerApi.dll`, CI reads it
+from a repository secret:
+
+1. Base64-encode your local copy:
+   ```pwsh
+   [Convert]::ToBase64String([IO.File]::ReadAllBytes("lib/UnifiedDownloadManagerApi.dll")) | Set-Clipboard
+   ```
+2. Add it under **Settings → Secrets and variables → Actions** as
+   `UDM_API_DLL_BASE64`.
+
+Without the secret (e.g. on forks) the build step is skipped with a notice rather
+than failing.
+
+To cut a release: `git tag v0.1.0 && git push origin v0.1.0`.
+
 ## Project layout
 
 | Path | Purpose |
