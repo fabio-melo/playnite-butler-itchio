@@ -29,7 +29,7 @@ namespace ItchioDownloader.Controllers
         public ItchInstallController(Game game, ItchioDownloaderPlugin plugin) : base(game)
         {
             this.plugin = plugin;
-            Name = "Instalar pelo itch.io";
+            Name = "Install via itch.io";
         }
 
         public override void Dispose()
@@ -102,7 +102,7 @@ namespace ItchioDownloader.Controllers
         {
             plugin.PlayniteApi.Dialogs.ActivateGlobalProgress(progress =>
             {
-                progress.Text = $"Preparando {Game.Name}…";
+                progress.Text = $"Preparing {Game.Name}…";
                 try
                 {
                     var job = plugin.Installs.Prepare(gameId, choice.Upload, null, "install", choice.InstallLocationId);
@@ -126,7 +126,7 @@ namespace ItchioDownloader.Controllers
             {
                 plugin.PlayniteApi.Dialogs.ActivateGlobalProgress(progress =>
                 {
-                    progress.Text = $"Preparando {Game.Name}…";
+                    progress.Text = $"Preparing {Game.Name}…";
                     try
                     {
                         var job = plugin.Installs.Prepare(gameId, choice.Upload, null, "install", choice.InstallLocationId);
@@ -182,7 +182,7 @@ namespace ItchioDownloader.Controllers
         public ItchUninstallController(Game game, ItchioDownloaderPlugin plugin) : base(game)
         {
             this.plugin = plugin;
-            Name = "Desinstalar pelo itch.io";
+            Name = "Uninstall via itch.io";
         }
 
         public override void Dispose()
@@ -193,7 +193,7 @@ namespace ItchioDownloader.Controllers
         {
             plugin.PlayniteApi.Dialogs.ActivateGlobalProgress(progress =>
             {
-                progress.Text = $"Desinstalando {Game.Name}…";
+                progress.Text = $"Uninstalling {Game.Name}…";
                 try
                 {
                     var caves = plugin.Installs.GetCaves();
@@ -236,7 +236,7 @@ namespace ItchioDownloader.Controllers
         public ItchPlayController(Game game, ItchioDownloaderPlugin plugin) : base(game)
         {
             this.plugin = plugin;
-            Name = "Jogar pelo itch.io";
+            Name = "Play via itch.io";
         }
 
         public override void Dispose()
@@ -260,7 +260,7 @@ namespace ItchioDownloader.Controllers
                 var cave = client.GetCaves().FirstOrDefault(c => c.Game?.Id.ToString() == Game.GameId);
                 if (cave == null)
                 {
-                    throw new Exception("Instalação não encontrada para este jogo.");
+                    throw new Exception("No installation found for this game.");
                 }
 
                 client.NotificationReceived += OnNotification;
@@ -366,7 +366,7 @@ namespace ItchioDownloader.Controllers
 
             var options = actions.Select(a => new MessageBoxOption(a.Label)).ToList();
             var chosen = plugin.PlayniteApi.Dialogs.ShowMessage(
-                "O que você quer abrir?",
+                "What do you want to open?",
                 Game.Name,
                 System.Windows.MessageBoxImage.Question,
                 options);

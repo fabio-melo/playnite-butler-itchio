@@ -28,10 +28,10 @@
 
         <DockPanel Grid.Row="1" Margin="0,16,0,6">
             <CheckBox DockPanel.Dock="Right" VerticalAlignment="Center"
-                      Content="Mostrar incompatíveis"
+                      Content="Show incompatible"
                       IsChecked="{Binding ShowIncompatible}"
                       Visibility="{Binding HasIncompatible, Converter={StaticResource BoolToVis}}" />
-            <TextBlock Text="Arquivo" FontWeight="Bold" VerticalAlignment="Center" />
+            <TextBlock Text="File" FontWeight="Bold" VerticalAlignment="Center" />
         </DockPanel>
 
         <ListBox Grid.Row="2" MinHeight="140" MaxHeight="260"
@@ -51,7 +51,7 @@
         </ListBox>
 
         <StackPanel Grid.Row="3" Margin="0,16,0,0">
-            <TextBlock Text="Instalar em" FontWeight="Bold" />
+            <TextBlock Text="Install to" FontWeight="Bold" />
             <DockPanel Margin="0,6,0,0">
                 <Button DockPanel.Dock="Right" Content="…" Padding="16,4" Margin="8,0,0,0"
                         Command="{Binding BrowseCommand}" />
@@ -76,20 +76,20 @@
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Download" Margin="0,0,16,4" Opacity="0.7" />
             <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding DownloadSizeText}" Margin="0,0,0,4" />
 
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Em disco" Margin="0,0,16,4" Opacity="0.7" />
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="On disk" Margin="0,0,16,4" Opacity="0.7" />
             <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding InstallSizeText}" Margin="0,0,0,4" />
 
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="Espaço livre" Margin="0,0,16,4" Opacity="0.7" />
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Free space" Margin="0,0,16,4" Opacity="0.7" />
             <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding FreeSpaceText}" Margin="0,0,0,4" />
 
-            <TextBlock Grid.Row="3" Grid.Column="0" Text="Depois de instalar" Margin="0,0,16,0" Opacity="0.7" />
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="After install" Margin="0,0,16,0" Opacity="0.7" />
             <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding AfterInstallText}" />
         </Grid>
 
         <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
-            <Button Content="Instalar" Padding="24,6" IsDefault="True"
+            <Button Content="Install" Padding="24,6" IsDefault="True"
                     Command="{Binding InstallCommand}" />
-            <Button Content="Cancelar" Padding="24,6" Margin="8,0,0,0" IsCancel="True"
+            <Button Content="Cancel" Padding="24,6" Margin="8,0,0,0" IsCancel="True"
                     Command="{Binding CancelCommand}" />
         </StackPanel>
     </Grid>

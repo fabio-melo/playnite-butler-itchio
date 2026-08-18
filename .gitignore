@@ -2,6 +2,7 @@
 bin/
 obj/
 .vs/
+.vscode/
 
 # Third-party assemblies are not redistributed here — see README.
 *.dll

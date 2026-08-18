@@ -39,7 +39,7 @@ namespace ItchioDownloader.Udm
                 downloadTask.forcefulCts?.Token ?? CancellationToken.None);
 
             downloadTask.status = UnifiedDownloadStatus.Running;
-            Set(downloadTask, t => t.activity = "Preparando…");
+            Set(downloadTask, t => t.activity = "Preparing…");
 
             try
             {
@@ -167,10 +167,10 @@ namespace ItchioDownloader.Udm
             {
                 selectedEntry.name,
                 string.Empty,
-                "Origem: itch.io",
-                "Arquivo: " + (job?.Upload?.Label ?? "—"),
-                "Canal: " + (string.IsNullOrEmpty(job?.Upload?.ChannelName) ? "—" : job.Upload.ChannelName),
-                "Instalar em: " + (selectedEntry.fullInstallPath ?? job?.Queue?.InstallFolder ?? "—")
+                "Source: itch.io",
+                "File: " + (job?.Upload?.Label ?? "—"),
+                "Channel: " + (string.IsNullOrEmpty(job?.Upload?.ChannelName) ? "—" : job.Upload.ChannelName),
+                "Install to: " + (selectedEntry.fullInstallPath ?? job?.Queue?.InstallFolder ?? "—")
             };
 
             plugin.PlayniteApi.Dialogs.ShowMessage(string.Join(Environment.NewLine, lines), "itch.io");
@@ -180,11 +180,11 @@ namespace ItchioDownloader.Udm
         {
             switch (type)
             {
-                case "download": return "Baixando";
-                case "install": return "Instalando";
-                case "update": return "Aplicando patch";
-                case "heal": return "Verificando arquivos";
-                case "uninstall": return "Desinstalando";
+                case "download": return "Downloading";
+                case "install": return "Installing";
+                case "update": return "Applying patch";
+                case "heal": return "Verifying files";
+                case "uninstall": return "Uninstalling";
                 default: return string.Empty;
             }
         }

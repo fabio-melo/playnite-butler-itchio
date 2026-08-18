@@ -137,7 +137,7 @@ namespace ItchioDownloader
 
             if (Settings.IsConnected)
             {
-                Status = $"Conectado como {Settings.ConnectedAs}.";
+                Status = $"Connected as {Settings.ConnectedAs}.";
             }
 
             ConnectCommand = new RelayCommand<object>(_ => Connect(), _ => !Busy);
@@ -152,12 +152,12 @@ namespace ItchioDownloader
         {
             if (string.IsNullOrWhiteSpace(Settings.ApiKey))
             {
-                Status = "Cole uma API key primeiro.";
+                Status = "Paste an API key first.";
                 return;
             }
 
             Busy = true;
-            Status = "Iniciando o butler…";
+            Status = "Starting butler…";
 
             try
             {
@@ -166,13 +166,13 @@ namespace ItchioDownloader
                     var profile = client.LoginWithApiKey(Settings.ApiKey.Trim());
                     if (profile?.User == null)
                     {
-                        Status = "O butler não retornou um perfil.";
+                        Status = "butler returned no profile.";
                         return;
                     }
 
                     Settings.ProfileId = profile.Id;
                     Settings.ConnectedAs = profile.User.Name;
-                    Status = $"Conectado como {profile.User.Name}.";
+                    Status = $"Connected as {profile.User.Name}.";
                     OnPropertyChanged(nameof(Settings));
                 }
             }
@@ -211,7 +211,7 @@ namespace ItchioDownloader
                 Settings.ProfileId = 0;
                 Settings.ConnectedAs = string.Empty;
                 Settings.ApiKey = string.Empty;
-                Status = "Desconectado.";
+                Status = "Disconnected.";
                 OnPropertyChanged(nameof(Settings));
                 Busy = false;
             }

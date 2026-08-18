@@ -160,7 +160,7 @@ namespace ItchioDownloader
 
             PlayniteApi.Dialogs.ActivateGlobalProgress(progress =>
             {
-                progress.Text = $"Consultando arquivos de {game.Name}…";
+                progress.Text = $"Reading files for {game.Name}…";
                 try
                 {
                     options = Installs.GetInstallOptions(game.GameId);
@@ -182,7 +182,7 @@ namespace ItchioDownloader
             if (uploadCount == 0)
             {
                 PlayniteApi.Dialogs.ShowErrorMessage(
-                    "O itch.io não lista nenhum arquivo para baixar neste item.", "itch.io");
+                    "itch.io lists no files to download for this item.", "itch.io");
                 return null;
             }
 
@@ -196,7 +196,7 @@ namespace ItchioDownloader
                     ShowMinimizeButton = false
                 });
 
-                window.Title = "Instalar pelo itch.io";
+                window.Title = "Install via itch.io";
                 window.SizeToContent = SizeToContent.WidthAndHeight;
                 window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 window.Owner = PlayniteApi.Dialogs.GetCurrentAppWindow();
@@ -252,10 +252,10 @@ namespace ItchioDownloader
                             Settings.ProfileId,
                             Settings.OnlyGameClassification ? "game" : null,
                             Settings.OnlyWindowsCompatible ? "windows" : null,
-                            (page, total) => logger.Info($"itch.io: {total} chave(s) em {page} página(s)…"),
+                            (page, total) => logger.Info($"itch.io: {total} key(s) across {page} page(s)…"),
                             args.CancelToken);
 
-                        logger.Info($"itch.io: {keys.Count} chave(s) de download.");
+                        logger.Info($"itch.io: {keys.Count} download key(s).");
 
                         foreach (var key in keys)
                         {
@@ -311,11 +311,11 @@ namespace ItchioDownloader
             if (args.CancelToken.IsCancellationRequested)
             {
                 // A partial list would read as "the library shrank" to Playnite.
-                logger.Info("itch.io: importação cancelada; nada devolvido.");
+                logger.Info("itch.io: import cancelled; nothing returned.");
                 return new List<GameMetadata>();
             }
 
-            logger.Info($"itch.io: devolvendo {games.Count} jogo(s) para o Playnite.");
+            logger.Info($"itch.io: returning {games.Count} game(s) to Playnite.");
             return games.Values;
         }
 
@@ -405,48 +405,48 @@ namespace ItchioDownloader
             yield return new MainMenuItem
             {
                 MenuSection = section,
-                Description = "Verificar atualizações",
+                Description = "Check for updates",
                 Action = _ => CheckUpdatesInteractive()
             };
 
             yield return new MainMenuItem
             {
                 MenuSection = section,
-                Description = "Adotar instalações do app itch.io",
+                Description = "Adopt itch.io app installs",
                 Action = _ => AdoptInteractive()
             };
 
             yield return new MainMenuItem
             {
                 MenuSection = section,
-                Description = "Migrar jogos do plugin itch.io original",
+                Description = "Migrate games from the original itch.io plugin",
                 Action = _ => MigrateInteractive(revert: false)
             };
 
             yield return new MainMenuItem
             {
                 MenuSection = section,
-                Description = "Reverter migração (devolver ao plugin original)",
+                Description = "Revert migration (return to the original plugin)",
                 Action = _ => MigrateInteractive(revert: true)
             };
         }
 
         public void MigrateInteractive(bool revert)
         {
-            var fromName = revert ? Name : "itch.io (integrado)";
-            var toName = revert ? "itch.io (integrado)" : Name;
-            var title = revert ? "Reverter migração" : "Migrar jogos";
+            var fromName = revert ? Name : "itch.io (built-in)";
+            var toName = revert ? "itch.io (built-in)" : Name;
+            var title = revert ? "Revert migration" : "Migrate games";
 
             var pending = revert ? Migration.CountRevertable() : Migration.CountMigratable();
             if (pending == 0)
             {
-                PlayniteApi.Dialogs.ShowMessage($"Nenhum jogo no plugin {fromName}.", title);
+                PlayniteApi.Dialogs.ShowMessage($"No games in the {fromName} plugin.", title);
                 return;
             }
 
             var confirm = PlayniteApi.Dialogs.ShowMessage(
-                $"Mover {pending} jogo(s) de \"{fromName}\" para \"{toName}\"?" + Environment.NewLine + Environment.NewLine +
-                "Tempo jogado, tags, capas e status são preservados — só a origem muda.",
+                $"Move {pending} game(s) from \"{fromName}\" to \"{toName}\"?" + Environment.NewLine + Environment.NewLine +
+                "Play time, tags, covers and status are preserved — only the source changes.",
                 title,
                 System.Windows.MessageBoxButton.YesNo,
                 System.Windows.MessageBoxImage.Question);
@@ -482,18 +482,18 @@ namespace ItchioDownloader
                 return;
             }
 
-            var message = $"{result.Moved} jogo(s) movido(s).";
+            var message = $"{result.Moved} game(s) moved.";
             if (result.Skipped > 0)
             {
                 message += Environment.NewLine +
-                           $"{result.Skipped} ignorado(s) por já existirem em \"{toName}\".";
+                           $"{result.Skipped} skipped because they already exist in \"{toName}\".";
             }
 
             if (!revert && result.Moved > 0)
             {
                 message += Environment.NewLine + Environment.NewLine +
-                           "Os jogos instalados só continuam marcados como instalados depois de " +
-                           "\"Adotar instalações do app itch.io\".";
+                           "Installed games only stay marked as installed after " +
+                           "\"Adopt itch.io app installs\".";
             }
 
             PlayniteApi.Dialogs.ShowMessage(message, title);
@@ -503,12 +503,12 @@ namespace ItchioDownloader
         {
             PlayniteApi.Dialogs.ActivateGlobalProgress(progress =>
             {
-                progress.Text = "Procurando atualizações no itch.io…";
+                progress.Text = "Checking itch.io for updates…";
                 try
                 {
                     var updates = Updates.Check();
                     var message = updates.Count == 0
-                        ? "Nenhuma atualização pendente."
+                        ? "No pending updates."
                         : string.Join(Environment.NewLine, updates.Select(u => "• " + u.Game?.Title));
 
                     PlayniteApi.Dialogs.ShowMessage(message, "itch.io");
@@ -525,14 +525,14 @@ namespace ItchioDownloader
         {
             PlayniteApi.Dialogs.ActivateGlobalProgress(progress =>
             {
-                progress.Text = "Procurando jogos instalados pelo app do itch.io…";
+                progress.Text = "Looking for games installed by the itch.io app…";
                 try
                 {
                     var adopted = Installs.AdoptItchAppInstalls();
                     PlayniteApi.Dialogs.ShowMessage(
                         adopted == 0
-                            ? "Nada novo encontrado."
-                            : $"{adopted} instalação(ões) adotada(s). Atualize a biblioteca para vê-las.",
+                            ? "Nothing new found."
+                            : $"{adopted} install(s) adopted. Refresh the library to see them.",
                         "itch.io");
                 }
                 catch (Exception e)

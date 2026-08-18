@@ -39,7 +39,7 @@ namespace ItchioDownloader.Views
 
                 if (!string.IsNullOrEmpty(Upload.ChannelName))
                 {
-                    parts.Add("canal " + Upload.ChannelName);
+                    parts.Add("channel " + Upload.ChannelName);
                 }
 
                 if (Upload.Build != null)
@@ -54,12 +54,12 @@ namespace ItchioDownloader.Views
 
                 if (Upload.Preorder)
                 {
-                    parts.Add("pré-venda");
+                    parts.Add("preorder");
                 }
 
                 if (!Compatible)
                 {
-                    parts.Add("não marcado para este sistema");
+                    parts.Add("not tagged for this system");
                 }
 
                 return string.Join(" · ", parts);
@@ -248,7 +248,7 @@ namespace ItchioDownloader.Views
             }
 
             DownloadSizeText = upload.Size > 0 ? FormatBytes(upload.Size) : "—";
-            InstallSizeText = "calculando…";
+            InstallSizeText = "calculating…";
             Busy = true;
 
             Task.Run(() =>
@@ -272,7 +272,7 @@ namespace ItchioDownloader.Views
                         }
                         else
                         {
-                            InstallSizeText = string.IsNullOrEmpty(plan?.ErrorMessage) ? "desconhecido" : plan.ErrorMessage;
+                            InstallSizeText = string.IsNullOrEmpty(plan?.ErrorMessage) ? "unknown" : plan.ErrorMessage;
                             plannedInstallSize = 0;
                         }
 
@@ -289,7 +289,7 @@ namespace ItchioDownloader.Views
                     logger.Warn(e, "Install.PlanUpload failed.");
                     if (!token.IsCancellationRequested)
                     {
-                        Application.Current.Dispatcher.Invoke(() => InstallSizeText = "desconhecido");
+                        Application.Current.Dispatcher.Invoke(() => InstallSizeText = "unknown");
                     }
                 }
                 finally

@@ -7,27 +7,27 @@
              d:DesignWidth="600">
     <StackPanel Margin="20">
 
-        <TextBlock Text="Conta itch.io" FontSize="16" FontWeight="Bold" />
+        <TextBlock Text="itch.io account" FontSize="16" FontWeight="Bold" />
         <TextBlock TextWrapping="Wrap" Margin="0,8,0,0"
-                   Text="Gere uma chave em itch.io/user/settings/api-keys e cole abaixo. A chave é trocada por credenciais que o butler guarda no banco próprio desta extensão." />
+                   Text="Generate a key at itch.io/user/settings/api-keys and paste it below. The key is exchanged for credentials that butler stores in this extension's own database." />
 
         <DockPanel Margin="0,12,0,0">
-            <Button DockPanel.Dock="Right" Content="Conectar" Margin="8,0,0,0" Padding="16,4"
+            <Button DockPanel.Dock="Right" Content="Connect" Margin="8,0,0,0" Padding="16,4"
                     Command="{Binding ConnectCommand}" />
             <PasswordBox x:Name="ApiKeyBox" PasswordChanged="ApiKeyBox_PasswordChanged" />
         </DockPanel>
 
         <DockPanel Margin="0,8,0,0">
-            <Button DockPanel.Dock="Right" Content="Desconectar" Margin="8,0,0,0" Padding="16,4"
+            <Button DockPanel.Dock="Right" Content="Disconnect" Margin="8,0,0,0" Padding="16,4"
                     Command="{Binding DisconnectCommand}" />
             <TextBlock Text="{Binding Status}" TextWrapping="Wrap" VerticalAlignment="Center" />
         </DockPanel>
 
         <Separator Margin="0,20,0,12" />
 
-        <TextBlock Text="Instalação" FontSize="16" FontWeight="Bold" />
+        <TextBlock Text="Installation" FontSize="16" FontWeight="Bold" />
         <TextBlock TextWrapping="Wrap" Margin="0,8,0,0"
-                   Text="Pasta onde jogos novos serão instalados. Vazio usa a pasta de dados da extensão." />
+                   Text="Folder where new games are installed. Empty uses the extension's data folder." />
         <DockPanel Margin="0,8,0,0">
             <Button DockPanel.Dock="Right" Content="…" Margin="8,0,0,0" Padding="16,4"
                     Command="{Binding BrowseInstallLocationCommand}" />
@@ -35,35 +35,35 @@
         </DockPanel>
 
         <CheckBox Margin="0,12,0,0" IsChecked="{Binding Settings.AdoptItchAppInstalls}"
-                  Content="Adotar jogos já instalados pelo app do itch.io" />
+                  Content="Adopt games already installed by the itch.io app" />
         <TextBlock TextWrapping="Wrap" Margin="24,4,0,0" Opacity="0.7"
-                   Text="Registra a pasta do app itch como local de instalação e reconstrói os registros a partir dos recibos em disco." />
+                   Text="Registers the itch app folder as an install location and rebuilds the records from the receipts on disk." />
         <Button Margin="24,8,0,0" Padding="16,4" HorizontalAlignment="Left"
-                Content="Adotar agora" Command="{Binding AdoptCommand}" />
+                Content="Adopt now" Command="{Binding AdoptCommand}" />
 
         <Separator Margin="0,20,0,12" />
 
-        <TextBlock Text="Migração" FontSize="16" FontWeight="Bold" />
+        <TextBlock Text="Migration" FontSize="16" FontWeight="Bold" />
         <TextBlock TextWrapping="Wrap" Margin="0,8,0,0"
-                   Text="Move as entradas da biblioteca entre o plugin itch.io integrado do Playnite e este. Tempo jogado, tags, capas e status são preservados — só a origem muda." />
+                   Text="Moves library entries between Playnite's built-in itch.io plugin and this one. Play time, tags, covers and status are preserved — only the source changes." />
         <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
-            <Button Padding="16,4" Content="Migrar do plugin original" Command="{Binding MigrateCommand}" />
-            <Button Padding="16,4" Margin="8,0,0,0" Content="Reverter" Command="{Binding RevertMigrationCommand}" />
+            <Button Padding="16,4" Content="Migrate from original plugin" Command="{Binding MigrateCommand}" />
+            <Button Padding="16,4" Margin="8,0,0,0" Content="Revert" Command="{Binding RevertMigrationCommand}" />
         </StackPanel>
 
         <Separator Margin="0,20,0,12" />
 
-        <TextBlock Text="Importação" FontSize="16" FontWeight="Bold" />
+        <TextBlock Text="Import" FontSize="16" FontWeight="Bold" />
         <CheckBox Margin="0,12,0,0" IsChecked="{Binding Settings.ImportOwnedGames}"
-                  Content="Importar jogos comprados / reivindicados" />
+                  Content="Import purchased / claimed games" />
         <CheckBox Margin="0,8,0,0" IsChecked="{Binding Settings.ImportInstalledGames}"
-                  Content="Importar jogos instalados" />
+                  Content="Import installed games" />
         <CheckBox Margin="0,8,0,0" IsChecked="{Binding Settings.OnlyGameClassification}"
-                  Content="Somente itens classificados como jogo (ignorar ferramentas, quadrinhos, trilhas, assets)" />
+                  Content="Only items classified as games (ignore tools, comics, soundtracks, assets)" />
         <CheckBox Margin="0,8,0,0" IsChecked="{Binding Settings.OnlyWindowsCompatible}"
-                  Content="Somente itens marcados como compatíveis com Windows" />
+                  Content="Only items marked as Windows-compatible" />
         <TextBlock TextWrapping="Wrap" Margin="24,4,0,0" Opacity="0.7"
-                   Text="Cuidado: muitos uploads do itch.io não têm marcação de plataforma e seriam descartados." />
+                   Text="Warning: many itch.io uploads have no platform tagging and would be discarded." />
 
     </StackPanel>
 </UserControl>

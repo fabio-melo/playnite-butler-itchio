@@ -139,8 +139,8 @@ namespace ItchioDownloader.Services
             if (!string.IsNullOrEmpty(upload.ChannelName)) parts.Add(upload.ChannelName);
             if (upload.Build != null) parts.Add("v" + upload.Build.DisplayVersion);
             if (upload.Demo) parts.Add("demo");
-            if (upload.Preorder) parts.Add("pré-venda");
-            if (!compatible) parts.Add("sem marcação para este sistema");
+            if (upload.Preorder) parts.Add("preorder");
+            if (!compatible) parts.Add("not tagged for this system");
 
             return string.Join(" · ", parts);
         }

@@ -199,7 +199,7 @@ namespace ItchioDownloader.Services
                     ?? PickDefaultUpload(uploads);
                 if (chosen == null)
                 {
-                    throw new Exception("Nenhum download disponível para este item no itch.io.");
+                    throw new Exception("No download available for this item on itch.io.");
                 }
 
                 var job = new ItchInstallJob
@@ -264,7 +264,7 @@ namespace ItchioDownloader.Services
                 job.Queue = client.Queue(prms);
                 if (job.Queue == null)
                 {
-                    throw new Exception("Install.Queue não retornou uma tarefa.");
+                    throw new Exception("Install.Queue returned no task.");
                 }
 
                 jobs[gameId] = job;
@@ -412,7 +412,7 @@ namespace ItchioDownloader.Services
             existing = client.ListInstallLocations().FirstOrDefault(l => PathsEqual(l.Path, path));
             if (existing == null)
             {
-                throw new Exception($"Não consegui registrar '{path}' como local de instalação.");
+                throw new Exception($"Could not register '{path}' as an install location.");
             }
 
             return existing.Id;

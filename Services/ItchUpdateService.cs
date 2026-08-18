@@ -54,13 +54,13 @@ namespace ItchioDownloader.Services
         {
             if (update?.Game == null || string.IsNullOrEmpty(update.CaveId))
             {
-                throw new ArgumentException("Update sem jogo ou cave.", nameof(update));
+                throw new ArgumentException("Update has no game or cave.", nameof(update));
             }
 
             var choice = update.Choices?.FirstOrDefault();
             if (choice?.Upload == null)
             {
-                throw new Exception("O itch.io não indicou qual arquivo instalar.");
+                throw new Exception("itch.io did not indicate which file to install.");
             }
 
             var gameId = update.Game.Id.ToString();

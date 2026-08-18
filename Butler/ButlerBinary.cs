@@ -115,7 +115,7 @@ namespace ItchioDownloader.Butler
 
         public static string Download(string dataDir, Action<string> onProgress = null)
         {
-            onProgress?.Invoke("Consultando a versão mais recente do butler…");
+            onProgress?.Invoke("Checking for the latest butler version…");
             string version;
             using (var web = CreateClient())
             {
@@ -135,7 +135,7 @@ namespace ItchioDownloader.Butler
                 return exePath;
             }
 
-            onProgress?.Invoke($"Baixando butler {version}…");
+            onProgress?.Invoke($"Downloading butler {version}…");
             var archive = Path.Combine(Path.GetTempPath(), $"butler-{version}-{Guid.NewGuid():N}.zip");
             try
             {
