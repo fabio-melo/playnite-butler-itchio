@@ -1,0 +1,11 @@
+# Build output
+bin/
+obj/
+.vs/
+
+# Third-party assemblies are not redistributed here — see README.
+*.dll
+*.dll.mdb
+
+# NuGet
+packages/

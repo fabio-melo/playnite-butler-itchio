@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net462</TargetFramework>
+    <AssemblyName>ItchioDownloader</AssemblyName>
+    <RootNamespace>ItchioDownloader</RootNamespace>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <UseWPF>true</UseWPF>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 6.16 matches the SDK the installed Playnite ships, and is the first version
+         with InstallController.InvokeOnInstallationCancelled. Older SDKs left no way
+         to abort an install other than poking Game.IsInstalling. -->
+    <PackageReference Include="PlayniteSDK" Version="6.16.0">
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3">
+      <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Vendored from the installed UnifiedDownloadManager extension. Shipped
+         next to our DLL exactly like LegendaryLibrary ships it: Playnite loads
+         extension assemblies from the extension's own folder. -->
+    <Reference Include="UnifiedDownloadManagerApi">
+      <HintPath>lib\UnifiedDownloadManagerApi.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="extension.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,77 @@
+# Butler (Itch.io) — Playnite Library Extension
+
+A [Playnite](https://playnite.link/) library plugin that imports your
+[itch.io](https://itch.io/) library and installs, updates, and launches games
+through **[butler](https://itch.io/docs/butler/)**, itch.io's official
+command-line tool.
+
+Downloads run through the
+[Unified Download Manager](https://playnite.link/addons.html) (UDM), so itch.io
+installs share the same queue, progress UI, and concurrency limits as your other
+Playnite libraries.
+
+## Features
+
+- Imports your itch.io library into Playnite
+- Installs and updates games via butler (delta patching, resumable downloads)
+- Butler is fetched automatically at runtime — no manual setup of the CLI
+- Integrates with the Unified Download Manager download queue
+- Works in Desktop and Fullscreen mode
+
+## Requirements
+
+- **Playnite 10+** (built against PlayniteSDK 6.16)
+- **[Unified Download Manager](https://playnite.link/addons.html)** extension
+  installed in Playnite. This plugin builds against its public API
+  (`UnifiedDownloadManagerApi.dll`) — see [Building](#building).
+- An itch.io account
+- Windows (butler is downloaded per-platform; only Windows is tested)
+
+`butler.exe` itself is **not** bundled. It is resolved at runtime in this order:
+a copy previously downloaded into the extension's data folder, the copy shipped
+with the itch.io desktop app if present, or a fresh download from
+[broth.itch.zone](https://broth.itch.zone/butler) (itch.io's own distribution
+channel).
+
+## Building
+
+This repository does **not** redistribute third-party assemblies. Before
+building you must supply `UnifiedDownloadManagerApi.dll`:
+
+1. Install the **Unified Download Manager** extension in Playnite.
+2. Locate its folder under
+   `%APPDATA%\Playnite\Extensions\<UDM-extension-id>\`.
+3. Copy `UnifiedDownloadManagerApi.dll` from there into `lib/` in this repo.
+
+Then build:
+
+```bash
+dotnet build -c Release
+```
+
+`PlayniteSDK` and `Newtonsoft.Json` are restored from NuGet automatically.
+
+## Installing (from source)
+
+1. Build in Release.
+2. Copy the contents of `bin/Release/net462/` into a new folder under
+   `%APPDATA%\Playnite\Extensions\`.
+3. Restart Playnite and sign in to itch.io from the extension settings.
+
+## Project layout
+
+| Path | Purpose |
+|------|---------|
+| `Butler/` | butler binary resolution, JSON-RPC daemon client |
+| `Controllers/` | Playnite install/uninstall/play controllers |
+| `Services/` | install, update, migration, headless-install services |
+| `Udm/` | Unified Download Manager integration |
+| `Views/` | WPF settings + install UI |
+| `extension.yaml` | Playnite extension manifest |
+
+## License
+
+[MIT](LICENSE) © 2026 Fabio Melo.
+
+butler and itch.io are trademarks of their respective owners. This is an
+unofficial, community-maintained extension and is not affiliated with itch.io.

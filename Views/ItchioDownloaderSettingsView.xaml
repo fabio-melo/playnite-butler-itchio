@@ -1,0 +1,69 @@
+<UserControl x:Class="ItchioDownloader.Views.ItchioDownloaderSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             d1p1:Ignorable="d"
+             xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             d:DesignWidth="600">
+    <StackPanel Margin="20">
+
+        <TextBlock Text="Conta itch.io" FontSize="16" FontWeight="Bold" />
+        <TextBlock TextWrapping="Wrap" Margin="0,8,0,0"
+                   Text="Gere uma chave em itch.io/user/settings/api-keys e cole abaixo. A chave é trocada por credenciais que o butler guarda no banco próprio desta extensão." />
+
+        <DockPanel Margin="0,12,0,0">
+            <Button DockPanel.Dock="Right" Content="Conectar" Margin="8,0,0,0" Padding="16,4"
+                    Command="{Binding ConnectCommand}" />
+            <PasswordBox x:Name="ApiKeyBox" PasswordChanged="ApiKeyBox_PasswordChanged" />
+        </DockPanel>
+
+        <DockPanel Margin="0,8,0,0">
+            <Button DockPanel.Dock="Right" Content="Desconectar" Margin="8,0,0,0" Padding="16,4"
+                    Command="{Binding DisconnectCommand}" />
+            <TextBlock Text="{Binding Status}" TextWrapping="Wrap" VerticalAlignment="Center" />
+        </DockPanel>
+
+        <Separator Margin="0,20,0,12" />
+
+        <TextBlock Text="Instalação" FontSize="16" FontWeight="Bold" />
+        <TextBlock TextWrapping="Wrap" Margin="0,8,0,0"
+                   Text="Pasta onde jogos novos serão instalados. Vazio usa a pasta de dados da extensão." />
+        <DockPanel Margin="0,8,0,0">
+            <Button DockPanel.Dock="Right" Content="…" Margin="8,0,0,0" Padding="16,4"
+                    Command="{Binding BrowseInstallLocationCommand}" />
+            <TextBox Text="{Binding Settings.InstallLocationPath}" />
+        </DockPanel>
+
+        <CheckBox Margin="0,12,0,0" IsChecked="{Binding Settings.AdoptItchAppInstalls}"
+                  Content="Adotar jogos já instalados pelo app do itch.io" />
+        <TextBlock TextWrapping="Wrap" Margin="24,4,0,0" Opacity="0.7"
+                   Text="Registra a pasta do app itch como local de instalação e reconstrói os registros a partir dos recibos em disco." />
+        <Button Margin="24,8,0,0" Padding="16,4" HorizontalAlignment="Left"
+                Content="Adotar agora" Command="{Binding AdoptCommand}" />
+
+        <Separator Margin="0,20,0,12" />
+
+        <TextBlock Text="Migração" FontSize="16" FontWeight="Bold" />
+        <TextBlock TextWrapping="Wrap" Margin="0,8,0,0"
+                   Text="Move as entradas da biblioteca entre o plugin itch.io integrado do Playnite e este. Tempo jogado, tags, capas e status são preservados — só a origem muda." />
+        <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
+            <Button Padding="16,4" Content="Migrar do plugin original" Command="{Binding MigrateCommand}" />
+            <Button Padding="16,4" Margin="8,0,0,0" Content="Reverter" Command="{Binding RevertMigrationCommand}" />
+        </StackPanel>
+
+        <Separator Margin="0,20,0,12" />
+
+        <TextBlock Text="Importação" FontSize="16" FontWeight="Bold" />
+        <CheckBox Margin="0,12,0,0" IsChecked="{Binding Settings.ImportOwnedGames}"
+                  Content="Importar jogos comprados / reivindicados" />
+        <CheckBox Margin="0,8,0,0" IsChecked="{Binding Settings.ImportInstalledGames}"
+                  Content="Importar jogos instalados" />
+        <CheckBox Margin="0,8,0,0" IsChecked="{Binding Settings.OnlyGameClassification}"
+                  Content="Somente itens classificados como jogo (ignorar ferramentas, quadrinhos, trilhas, assets)" />
+        <CheckBox Margin="0,8,0,0" IsChecked="{Binding Settings.OnlyWindowsCompatible}"
+                  Content="Somente itens marcados como compatíveis com Windows" />
+        <TextBlock TextWrapping="Wrap" Margin="24,4,0,0" Opacity="0.7"
+                   Text="Cuidado: muitos uploads do itch.io não têm marcação de plataforma e seriam descartados." />
+
+    </StackPanel>
+</UserControl>
