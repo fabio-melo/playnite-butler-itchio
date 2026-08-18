@@ -21,8 +21,9 @@ Playnite libraries.
 ## Requirements
 
 - **Playnite 10+** (built against PlayniteSDK 6.16)
-- **[Unified Download Manager](https://playnite.link/addons.html)** extension
-  installed in Playnite. This plugin builds against its public API
+- **[Unified Download Manager](https://github.com/hawkeye116477/playnite-unifiedDownloadManager-plugin)**
+  extension by [hawkeye116477](https://github.com/hawkeye116477), installed in
+  Playnite. This plugin builds against its public API
   (`UnifiedDownloadManagerApi.dll`) — see [Building](#building).
 - An itch.io account
 - Windows (butler is downloaded per-platform; only Windows is tested)
@@ -131,6 +132,14 @@ Playnite's built-in add-on browser once submitted to the
 | `Views/` | WPF settings + install UI |
 | `extension.yaml` | Playnite extension manifest |
 | `installer.yaml` | add-on database manifest (versions + download URLs) |
+
+## Credits
+
+- **[Unified Download Manager](https://github.com/hawkeye116477/playnite-unifiedDownloadManager-plugin)**
+  by [hawkeye116477](https://github.com/hawkeye116477) — this extension plugs
+  into UDM's download queue through its public API. The CI packaging approach
+  (Playnite Toolbox + an `installer.yaml` add-on manifest) also follows the
+  pattern from hawkeye116477's Playnite plugins.
 
 ## License
 
