@@ -40,20 +40,9 @@ channel).
 
 - Windows with the **.NET SDK** (any recent version — it targets `net462`,
   whose reference assemblies ship with the SDK / Visual Studio Build Tools).
-- **Playnite** installed (only needed to package a `.pext`, and to obtain the
-  DLL below).
+- **Playnite** installed (only needed to package a `.pext`).
 
-### 1. Supply the UDM assembly
-
-This repository does **not** redistribute third-party assemblies. Before
-building you must supply `UnifiedDownloadManagerApi.dll`:
-
-1. Install the **Unified Download Manager** extension in Playnite.
-2. Locate its folder under
-   `%APPDATA%\Playnite\Extensions\<UDM-extension-id>\`.
-3. Copy `UnifiedDownloadManagerApi.dll` from there into `lib/` in this repo.
-
-### 2. Compile
+### 1. Compile
 
 ```bash
 dotnet build -c Release
@@ -62,7 +51,7 @@ dotnet build -c Release
 The output lands in `bin/Release/net462/`. `PlayniteSDK` and `Newtonsoft.Json`
 are restored from NuGet automatically.
 
-### 3. Package a `.pext` (optional)
+### 2. Package a `.pext` (optional)
 
 A `.pext` is the installable package. Use Playnite's own **Toolbox** to build
 it — it validates the manifest and names the file
@@ -93,19 +82,6 @@ extension and packages a `.pext` with Playnite's Toolbox on every push to `main`
 on pull requests, and on demand (`workflow_dispatch`). The packaged `.pext` is
 uploaded as a build artifact; pushing a `v*` tag also attaches it to a GitHub
 Release.
-
-Because the repo does not redistribute `UnifiedDownloadManagerApi.dll`, CI reads it
-from a repository secret:
-
-1. Base64-encode your local copy:
-   ```pwsh
-   [Convert]::ToBase64String([IO.File]::ReadAllBytes("lib/UnifiedDownloadManagerApi.dll")) | Set-Clipboard
-   ```
-2. Add it under **Settings → Secrets and variables → Actions** as
-   `UDM_API_DLL_BASE64`.
-
-Without the secret (e.g. on forks) the build step is skipped with a notice rather
-than failing.
 
 ### Releasing
 
