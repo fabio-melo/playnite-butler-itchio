@@ -18,17 +18,13 @@
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3">
       <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
+    <PackageReference Include="UnifiedDownloadManagerApi" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- Vendored from the installed UnifiedDownloadManager extension. Shipped
          next to our DLL exactly like LegendaryLibrary ships it: Playnite loads
          extension assemblies from the extension's own folder. -->
-    <Reference Include="UnifiedDownloadManagerApi">
-      <HintPath>lib\UnifiedDownloadManagerApi.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-      <Private>true</Private>
-    </Reference>
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net.Http" />
